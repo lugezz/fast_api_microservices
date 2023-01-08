@@ -18,9 +18,9 @@ while True:
                 obj = result[1][0][1]
                 try:
                     product = Product.get(obj['product_id'])
-                    product.quantity = product.quantity - int(obj['quantity'])
-                    print(f"{obj['quantity']} reduced from {product.name}")
+                    product.quantity -= int(obj['quantity'])
                     product.save()
+                    print(f"{obj['quantity']} reduced from {product.name}")
                 except Exception:
                     redis.xadd('refund_order', obj, '*')
 
