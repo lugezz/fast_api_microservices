@@ -24,17 +24,38 @@ redis = get_redis_connection(
 class Product(HashModel):
     name: str
     price: float
-    quanity: int
+    quantity: int
 
     class Meta:
         database = redis
 
 
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
+def format(pk: str):
+    product = Product.get(pk)
+
+    return {
+        'id': product.pk,
+        'name': product.name,
+        'price': product.price,
+        'quantity': product.quantity
+    }
 
 
 @app.get("/products")
 def all():
-    return Product.all_pks()
+    return [format(pk) for pk in Product.all_pks()]
+
+
+@app.post("/products")
+def create(product: Product):
+    return product.save()
+
+
+@app.get('/products/{pk}')
+def get(pk: str):
+    return format(pk)
+
+
+@app.delete('/products/{pk}')
+def delete(pk: str):
+    return Product.delete(pk)
