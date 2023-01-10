@@ -1,3 +1,4 @@
+import {React} from 'react';
 import {Products} from "./components/Products";
 import {BrowserRouter, Routes, Route} from 'react-router-dom';
 import {ProductsCreate} from "./components/ProductsCreate";
